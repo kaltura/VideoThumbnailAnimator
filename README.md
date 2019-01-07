@@ -7,7 +7,7 @@ The logic used is as follow:
 * Thumbnail Stripe Width in Percentage: total slices multiplied by 100. 
 * Thumbnail Stripe X Position in Percentage: the total slices minus 1 (0-index) described as percent (100 divided by total slices minus 1), multiplied by the current slice nunmber (0-index). 
 
-# How to use
+# Set up
 View-source on [`index.html`](https://kaltura.github.io/VideoThumbnailAnimator/) for a quick referecne example.
 Include the ThumbAnimator script:
 ```html
