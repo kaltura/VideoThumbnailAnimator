@@ -18,9 +18,9 @@ function KalturaThumbAnimator () {
       thumbEl.addEventListener("mouseout", _this.mouseOut);
       thumbEl.addEventListener("touchend", _this.mouseOut);
       thumbEl.addEventListener("mouseup", _this.mouseOut);
-      bgThumbSpriteUrl = kalturaDomain + '/p/'+thumbData.pid+'/thumbnail/entry_id/'+thumbData.entryId+'/width/'+thumbData.pxWidth+'/type/3/vid_slices/'+thumbData.spriteSlices+'/quality/'+thumbData.quality+'/type/'+thumbData.cropType+'/file_name/thumbnail.jpg';
+      bgThumbSpriteUrl = kalturaDomain + '/p/'+thumbData.pid+'/thumbnail/entry_id/'+thumbData.entryId+'/width/'+thumbData.pxWidth+'/vid_slices/'+thumbData.spriteSlices+'/quality/'+thumbData.quality+'/type/'+thumbData.cropType+'/file_name/thumbnail.jpg';
       if (_useLazy) {
-        bgThumbSpriteUrlLowRes = kalturaDomain + '/p/'+thumbData.pid+'/thumbnail/entry_id/'+thumbData.entryId+'/width/'+(lazyWidth > 0 ? lazyWidth : thumbData.pxWidth)+'/type/3/quality/'+lazyQuality+'/type/'+thumbData.cropType+'/vid_slices/'+thumbData.spriteSlices+'/vid_slice/0/file_name/thumbnail.jpg';
+        bgThumbSpriteUrlLowRes = kalturaDomain + '/p/'+thumbData.pid+'/thumbnail/entry_id/'+thumbData.entryId+'/width/'+(lazyWidth > 0 ? lazyWidth : thumbData.pxWidth)+'/quality/'+lazyQuality+'/type/'+thumbData.cropType+'/vid_slices/'+thumbData.spriteSlices+'/vid_slice/0/file_name/thumbnail.jpg';
         thumbEl.style.backgroundImage = "url('" + bgThumbSpriteUrlLowRes + "')";
         thumbEl.style.backgroundPosition = "0% 0%";
         thumbEl.style.backgroundSize = "100% 100%";

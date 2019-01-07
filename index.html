@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style type="text/css">
+        .videothumbnail {
+          width: 19.6%;
+          height: 49%;
+          display: block;
+          margin-right: 2px;
+          margin-bottom: 2px;
+          float: left;
+          /* 
+            * Thumbnail Stripe Width in Percentage: total slices multiplied by 100
+              totaSlices * 100 = width in % (50*100=5000%)
+            * Thumbnail Stripe X Position in Percentage: the total slices minus 1 (0-index) described as percent (100 divided by total slices minus 1), multiplied by the current slice nunmber (0-index)
+              currentSlice * (100 / (totaSlices - 1))
+          */ 
+        }
+        #thumbnails {
+          resize: both;
+          overflow: auto;
+          border: 10px solid rgba(28, 99, 230, 0.4);
+          width: 700px; 
+          height: 260px;
+          -moz-background-clip: content;     /* Firefox 3.6 */
+          -webkit-background-clip: content;  /* Safari 4? Chrome 6? */
+          background-clip: content-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+        }
+    </style>
+</head>
+<body>
+    <section id="thumbnails">
+        <div class="videothumbnail" kfps="4.5" kslices="30" kwidth="600" kpid="2421271" kentryid="1_fjqtp7ki" kquality="45" kcrop="2"></div>
+        <div class="videothumbnail" kfps="4.5" kslices="30" kwidth="600" kpid="2421271" kentryid="1_qsoxqx9i" kquality="45"></div>
+        <div class="videothumbnail" kfps="4.5" kslices="30" kwidth="600" kpid="2421271" kentryid="1_0ikpj78n" kquality="45" kcrop="2"></div>
+        <div class="videothumbnail" kfps="4.5" kslices="30" kwidth="600" kpid="2421271" kentryid="1_tb5x7mg4" kquality="45" kcrop="2"></div>
+        <div class="videothumbnail" kfps="4.5" kslices="30" kwidth="600" kpid="2421271" kentryid="0_uanuf4gk" kquality="45" kcrop="2"></div>
+        <div style="clear: both;"></div>
+        <div class="videothumbnail" kfps="4" kslices="10" kwidth="300" kpid="2421271" kentryid="0_60gyd613"></div>
+        <div class="videothumbnail" kfps="4" kslices="60" kwidth="300" kpid="2421271" kentryid="1_6axd2of0"></div>
+        <div class="videothumbnail" kfps="4" kslices="60" kwidth="300" kpid="2421271" kentryid="1_ttzm547s"></div>
+        <div class="videothumbnail" kfps="4" kslices="100" kwidth="300" kpid="2421271" kentryid="1_qx6chwid"></div>
+        <div class="videothumbnail" kfps="4" kslices="100" kwidth="300" kpid="2421271" kentryid="1_71gyojxl"></div>
+    </section>
+    <script src="./KalturaThumbAnimator.js"></script>
+    <script>
+      var thumbAnimator = new KalturaThumbAnimator();
+      thumbAnimator.setup("videothumbnail", "https://cfvod.kaltura.com", true); //use blurred deffered loading
+      //thumbAnimator.setup("videothumbnail"); //regular load
+    </script>
+</body>
+
+</html>
