@@ -2,10 +2,10 @@ function KalturaThumbAnimator () {
   
   var _this = this;
   var lazyQuality = 65;
-  var lazyWidth = 40;
+  var lazyWidth = 120;
   var _startFrame = 0;
   
-  this.setup = function (thumbClassName, kalturaDomain = '://cfvod.kaltura.com', startFrame = 0, useLazy = false, lazyFilter = 'blur(3px) grayscale(100%) brightness(130%)') {
+  this.setup = function (thumbClassName, kalturaDomain = '//cdnapisec.kaltura.com', startFrame = 0, useLazy = false, lazyFilter = 'grayscale(100%) brightness(130%)') {
     var matches = Array.from(document.getElementsByClassName(thumbClassName));
     var _useLazy = useLazy;
     _this._startFrame = startFrame;
@@ -20,9 +20,28 @@ function KalturaThumbAnimator () {
       thumbEl.addEventListener("mouseout", _this.mouseOut);
       thumbEl.addEventListener("touchend", _this.mouseOut);
       thumbEl.addEventListener("mouseup", _this.mouseOut);
-      bgThumbSpriteUrl = kalturaDomain + '/p/'+thumbData.pid+'/thumbnail/entry_id/'+thumbData.entryId+'/width/'+thumbData.pxWidth+'/vid_slices/'+thumbData.spriteSlices+'/quality/'+thumbData.quality+'/type/'+thumbData.cropType+'/file_name/thumbnail.jpg';
+      bgThumbSpriteUrl = kalturaDomain + 
+                         '/p/' + thumbData.pid + 
+                         '/thumbnail/entry_id/' + thumbData.entryId + 
+                         '/width/' + thumbData.pxWidth + 
+                         '/vid_slices/' + thumbData.spriteSlices + 
+                         '/quality/' + thumbData.quality + 
+                         '/type/' + thumbData.cropType + 
+                         (thumbData.startSec >= 0 ? '/start_sec/' + thumbData.startSec : '') + 
+                         (thumbData.endSec > 0 && thumbData.endSec > thumbData.startSec ? '/end_sec/' + thumbData.endSec : '') + 
+                         '/file_name/thumbnail.jpg';
       if (_useLazy) {
-        bgThumbSpriteUrlLowRes = kalturaDomain + '/p/'+thumbData.pid+'/thumbnail/entry_id/'+thumbData.entryId+'/width/'+(lazyWidth > 0 ? lazyWidth : thumbData.pxWidth)+'/quality/'+lazyQuality+'/type/'+thumbData.cropType+'/vid_slices/'+thumbData.spriteSlices+'/vid_slice/'+_this._startFrame+'/file_name/thumbnail.jpg';
+        bgThumbSpriteUrlLowRes = kalturaDomain + 
+                                 '/p/' + thumbData.pid + 
+                                 '/thumbnail/entry_id/' + thumbData.entryId + 
+                                 '/width/' + (lazyWidth > 0 ? lazyWidth : thumbData.pxWidth) + 
+                                 '/quality/' + lazyQuality + 
+                                 '/type/' + thumbData.cropType + 
+                                 '/vid_slices/' + thumbData.spriteSlices + 
+                                 '/vid_slice/' + _this._startFrame + 
+                                 (thumbData.startSec >= 0 ? '/start_sec/' + thumbData.startSec : '') + 
+                                 (thumbData.endSec > 0 && thumbData.endSec > thumbData.startSec ? '/end_sec/' + thumbData.endSec : '') + 
+                                 '/file_name/thumbnail.jpg';
         thumbEl.style.backgroundImage = "url('" + bgThumbSpriteUrlLowRes + "')";
         thumbEl.style.backgroundPosition = "0% 0%";
         thumbEl.style.backgroundSize = "100% 100%";
@@ -68,24 +87,33 @@ function KalturaThumbAnimator () {
   this.getKThumbData = function (thumbEl) {
     var thumbData = {};
     //manndatory params
-    thumbData.pid = parseInt(thumbEl.getAttribute('kpid'));
+    thumbData.pid = _this.parseIntegerAttribute(thumbEl.getAttribute('kpid'));
     thumbData.entryId = thumbEl.getAttribute('kentryid');
-    thumbData.pxWidth = parseInt(thumbEl.getAttribute('kwidth'));
-    thumbData.spriteSlices = parseInt(thumbEl.getAttribute('kslices'));
+    thumbData.pxWidth = _this.parseIntegerAttribute(thumbEl.getAttribute('kwidth'));
+    thumbData.spriteSlices = _this.parseIntegerAttribute(thumbEl.getAttribute('kslices'));
     //optional params
-    thumbData.quality = parseInt(thumbEl.getAttribute('kquality'));
-    thumbData.quality = (isNaN(thumbData.quality) ? 100 : thumbData.quality);
-    thumbData.cropType = parseInt(thumbEl.getAttribute('kcrop'));
-    thumbData.cropType = (isNaN(thumbData.cropType) ? 5 : thumbData.cropType);
-    thumbData.fps = parseFloat(thumbEl.getAttribute('kfps'));
-    thumbData.fps = (isNaN(thumbData.fps) ? 4.5 : thumbData.fps);
+    thumbData.quality = _this.parseIntegerAttribute(thumbEl.getAttribute('kquality'), 100);
+    thumbData.cropType = _this.parseIntegerAttribute(thumbEl.getAttribute('kcrop'), 5);
+    thumbData.fps = _this.parseIntegerAttribute(thumbEl.getAttribute('kfps'), 4.5);
+    thumbData.startSec = _this.parseFloatAttribute(thumbEl.getAttribute('kstartsec'), -1);
+    thumbData.endSec = _this.parseFloatAttribute(thumbEl.getAttribute('kendsec'), -1);
     //operational vars
-    thumbData.keeprunning = parseInt(thumbEl.getAttribute('kislooping'));
-    thumbData.keeprunning = (isNaN(thumbData.keeprunning) ? 0 : thumbData.keeprunning);
-    thumbData.currentSlice = parseInt(thumbEl.getAttribute('knextslice'));
-    thumbData.currentSlice = (isNaN(thumbData.currentSlice) ? _this._startFrame : thumbData.currentSlice);
+    thumbData.keeprunning = _this.parseIntegerAttribute(thumbEl.getAttribute('kislooping'), 0);
+    thumbData.currentSlice = _this.parseIntegerAttribute(thumbEl.getAttribute('knextslice'), _this._startFrame);
     thumbData.kid = thumbEl.getAttribute('kid');
     return thumbData;
+  }
+
+  this.parseIntegerAttribute = function (attrString, defaultVal = -1) {
+    var intVal = parseInt(attrString);
+    intVal = (isNaN(intVal) ? defaultVal : intVal);
+    return intVal;
+  }
+
+  this.parseFloatAttribute = function (attrString, defaultVal = -1) {
+    var floatVal = parseFloat(attrString);
+    floatVal = (isNaN(floatVal) ? defaultVal : floatVal);
+    return floatVal;
   }
   
   this.mouseOver = function (e) {
